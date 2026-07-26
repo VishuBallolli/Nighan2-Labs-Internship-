@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Switch Practice</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center text-primary">JavaScript Switch Practice</h2>
+
+        <p class="fs-5 mt-3">
+            Day Number:
+            <span id="dayNumber"></span>
+        </p>
+
+        <p class="fs-5">
+            Day Name:
+            <span id="result" class="fw-bold text-success"></span>
+        </p>
+
+        <button class="btn btn-primary" onclick="showDay()">
+            Show Day
+        </button>
+    </div>
+</div>
+
+<script>
+
+function showDay(){
+
+    let day = 4;
+    let dayName = "";
+
+    switch(day){
+
+        case 1:
+            dayName = "Monday";
+            break;
+
+        case 2:
+            dayName = "Tuesday";
+            break;
+
+        case 3:
+            dayName = "Wednesday";
+            break;
+
+        case 4:
+            dayName = "Thursday";
+            break;
+
+        case 5:
+            dayName = "Friday";
+            break;
+
+        case 6:
+            dayName = "Saturday";
+            break;
+
+        case 7:
+            dayName = "Sunday";
+            break;
+
+        default:
+            dayName = "Invalid Day";
+    }
+
+    document.getElementById("dayNumber").innerHTML = day;
+    document.getElementById("result").innerHTML = dayName;
+
+    console.log(dayName);
+
+}
+
+</script>
+
+</body>
+</html>
