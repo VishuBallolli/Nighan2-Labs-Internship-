@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Signal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow p-4 text-center">
+        <h2>Traffic Signal using Switch</h2>
+
+        <button class="btn btn-success mt-3" onclick="checkSignal()">
+            Check Signal
+        </button>
+
+        <h3 id="result" class="mt-4 text-primary"></h3>
+    </div>
+</div>
+
+<script>
+function checkSignal() {
+
+    let signal = "yellow";
+
+    switch (signal) {
+        case "red":
+            document.getElementById("result").innerHTML = "🛑 Stop";
+            break;
+
+        case "yellow":
+            document.getElementById("result").innerHTML = "🟡 Wait";
+            break;
+
+        case "green":
+            document.getElementById("result").innerHTML = "🟢 Go";
+            break;
+
+        default:
+            document.getElementById("result").innerHTML = "Invalid Signal";
+    }
+}
+</script>
+
+</body>
+</html>
