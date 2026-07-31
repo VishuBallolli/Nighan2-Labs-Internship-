@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Practice</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2 id="heading" class="text-center">DOM Manipulation Practice</h2>
+
+        <input type="text" id="name" class="form-control my-3" placeholder="Enter Your Name">
+
+        <button class="btn btn-primary mb-2" onclick="showName()">
+            Show Name
+        </button>
+
+        <button class="btn btn-success mb-2" onclick="changeHeading()">
+            Change Heading
+        </button>
+
+        <button class="btn btn-warning mb-2" onclick="changeColor()">
+            Change Background
+        </button>
+
+        <button class="btn btn-danger mb-2" onclick="hideText()">
+            Hide Paragraph
+        </button>
+
+        <button class="btn btn-info mb-3" onclick="showText()">
+            Show Paragraph
+        </button>
+
+        <p id="paragraph">
+            Welcome to JavaScript DOM Manipulation.
+        </p>
+
+        <h4 id="output"></h4>
+
+    </div>
+
+</div>
+
+<script>
+
+function showName() {
+    let username = document.getElementById("name").value;
+    document.getElementById("output").innerHTML = "Hello, " + username + "!";
+}
+
+function changeHeading() {
+    document.getElementById("heading").innerHTML = "JavaScript DOM Updated!";
+}
+
+function changeColor() {
+    document.body.style.backgroundColor = "lightblue";
+}
+
+function hideText() {
+    document.getElementById("paragraph").style.display = "none";
+}
+
+function showText() {
+    document.getElementById("paragraph").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
