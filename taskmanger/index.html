@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Task Manager</title>
+
+  <style>
+    /* =====================
+       CSS
+    ====================== */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background: #222;
+      color: white;
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 25px;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eee;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    .delete-btn {
+      background: crimson;
+      color: white;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================
+       HTML
+  ====================== -->
+
+  <div class="container">
+
+    <h1>Task Manager</h1>
+
+    <div class="input-area">
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="Enter a task"
+      >
+
+      <button class="add-btn" onclick="addTask()">
+        Add
+      </button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+  </div>
+
+
+  <script>
+    // =====================
+    // JAVASCRIPT
+    // =====================
+
+    function addTask() {
+
+      const input = document.getElementById("taskInput");
+      const taskText = input.value.trim();
+
+      if (taskText === "") {
+        alert("Please enter a task");
+        return;
+      }
+
+      const li = document.createElement("li");
+
+      li.innerHTML = `
+        <span onclick="completeTask(this)">
+          ${taskText}
+        </span>
+
+        <button
+          class="delete-btn"
+          onclick="deleteTask(this)">
+          Delete
+        </button>
+      `;
+
+      document.getElementById("taskList").appendChild(li);
+
+      input.value = "";
+    }
+
+
+    function deleteTask(button) {
+
+      button.parentElement.remove();
+
+    }
+
+
+    function completeTask(task) {
+
+      task.classList.toggle("completed");
+
+    }
+  </script>
+
+</body>
+</html>
