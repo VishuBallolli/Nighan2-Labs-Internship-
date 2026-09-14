@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Task Manager</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .form input,
+    .form select {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .form input {
+      flex: 1;
+    }
+
+    button {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .add-btn {
+      background: #667eea;
+      color: white;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 10px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      background: #f7f7f7;
+      border-left: 5px solid #667eea;
+    }
+
+    .task.completed {
+      opacity: 0.6;
+      border-left-color: green;
+    }
+
+    .task.completed .task-name {
+      text-decoration: line-through;
+    }
+
+    .task-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .task-name {
+      font-weight: bold;
+    }
+
+    .priority {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .actions button {
+      margin-left: 5px;
+      padding: 8px 10px;
+    }
+
+    .complete {
+      background: #28a745;
+      color: white;
+    }
+
+    .delete {
+      background: #dc3545;
+      color: white;
+    }
+
+    .empty {
+      text-align: center;
+      color: #888;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .form {
+        flex-direction: column;
+      }
+
+      .stats {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .task {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>🚀 TaskFlow</h1>
+
+    <p class="subtitle">
+      Simple Smart Task Manager
+    </p>
+
+    <div class="form">
+
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="Enter a new task..."
+      >
+
+      <select id="priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+
+      <button class="add-btn" onclick="addTask()">
+        Add Task
+      </button>
+
+    </div>
+
+    <div class="stats">
+      <span>Total: <strong id="total">0</strong></span>
+      <span>Completed: <strong id="completed">0</strong></span>
+      <span>Pending: <strong id="pending">0</strong></span>
+    </div>
+
+    <div id="taskList"></div>
+
+  </div>
+
+
+  <script>
+
+    let tasks = [];
+
+    function addTask() {
+
+      const input = document.getElementById("taskInput");
+
+      const priority = document.getElementById("priority");
+
+      const taskName = input.value.trim();
+
+      if (taskName === "") {
+        alert("Please enter a task!");
+        return;
+      }
+
+      const task = {
+        id: Date.now(),
+        name: taskName,
+        priority: priority.value,
+        completed: false
+      };
+
+      tasks.push(task);
+
+      input.value = "";
+
+      displayTasks();
+    }
+
+
+    function displayTasks() {
+
+      const taskList = document.getElementById("taskList");
+
+      taskList.innerHTML = "";
+
+      if (tasks.length === 0) {
+
+        taskList.innerHTML =
+          '<div class="empty">No tasks yet 🎯</div>';
+
+        updateStats();
+
+        return;
+      }
+
+      tasks.forEach(task => {
+
+        const div = document.createElement("div");
+
+        div.className =
+          "task " + (task.completed ? "completed" : "");
+
+        div.innerHTML = `
+
+          <div class="task-info">
+
+            <span class="task-name">
+              ${task.name}
+            </span>
+
+            <span class="priority">
+              Priority: ${task.priority}
+            </span>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="complete"
+              onclick="toggleTask(${task.id})">
+              ${task.completed ? "Undo" : "Done"}
+            </button>
+
+            <button
+              class="delete"
+              onclick="deleteTask(${task.id})">
+              Delete
+            </button>
+
+          </div>
+
+        `;
+
+        taskList.appendChild(div);
+
+      });
+
+      updateStats();
+    }
+
+
+    function toggleTask(id) {
+
+      tasks = tasks.map(task => {
+
+        if (task.id === id) {
+          task.completed = !task.completed;
+        }
+
+        return task;
+
+      });
+
+      displayTasks();
+    }
+
+
+    function deleteTask(id) {
+
+      tasks = tasks.filter(task => task.id !== id);
+
+      displayTasks();
+    }
+
+
+    function updateStats() {
+
+      const total = tasks.length;
+
+      const completed =
+        tasks.filter(task => task.completed).length;
+
+      const pending = total - completed;
+
+      document.getElementById("total").textContent = total;
+
+      document.getElementById("completed").textContent =
+        completed;
+
+      document.getElementById("pending").textContent =
+        pending;
+    }
+
+
+    document
+      .getElementById("taskInput")
+      .addEventListener("keypress", function(event) {
+
+        if (event.key === "Enter") {
+          addTask();
+        }
+
+      });
+
+  </script>
+
+</body>
+</html>

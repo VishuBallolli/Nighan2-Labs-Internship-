@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow - Frontend Task</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+            background: white;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .tasks {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .tasks h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .task-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 5px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 13px;
+        }
+
+        .contact {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .contact button {
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #0b1120;
+            color: #aaa;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+
+            .task-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>TaskFlow 🚀</h1>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#tasks">Tasks</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h2>Manage Your Tasks Easily</h2>
+
+        <p>
+            A simple responsive frontend project built with HTML,
+            CSS and JavaScript.
+        </p>
+
+        <button class="btn" onclick="showMessage()">
+            Get Started
+        </button>
+
+        <p id="message"></p>
+    </section>
+
+
+    <!-- Tasks Section -->
+    <section class="tasks" id="tasks">
+
+        <h2>My Tasks</h2>
+
+        <div class="task-container">
+
+            <div class="card">
+                <h3>HTML</h3>
+                <p>Build the structure of the webpage.</p>
+                <span class="status">Completed</span>
+            </div>
+
+            <div class="card">
+                <h3>CSS</h3>
+                <p>Create responsive and attractive designs.</p>
+                <span class="status">Completed</span>
+            </div>
+
+            <div class="card">
+                <h3>JavaScript</h3>
+                <p>Add interaction and dynamic functionality.</p>
+                <span class="status">In Progress</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+
+        <h2>Ready to Build?</h2>
+
+        <p>Keep learning and keep building 🚀</p>
+
+        <button class="btn" onclick="contactMe()">
+            Contact
+        </button>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Nighan2 Lab Pvt. Ltd. | Frontend Development Task</p>
+    </footer>
+
+
+    <script>
+        function showMessage() {
+            const message = document.getElementById("message");
+
+            message.textContent =
+                "Welcome! Your frontend journey starts here 🚀";
+        }
+
+        function contactMe() {
+            alert("Thanks for visiting TaskFlow! 😊");
+        }
+    </script>
+
+</body>
+</html>
