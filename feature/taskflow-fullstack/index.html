@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TaskFlow</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #eef2ff;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    input,
+    select {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    input {
+      flex: 1;
+    }
+
+    button {
+      border: none;
+      padding: 10px 15px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .add {
+      background: #4f46e5;
+      color: white;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8f8f8;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    .task.completed {
+      opacity: 0.6;
+    }
+
+    .task.completed .name {
+      text-decoration: line-through;
+    }
+
+    .name {
+      font-weight: bold;
+    }
+
+    .priority {
+      font-size: 13px;
+      color: #777;
+      margin-top: 5px;
+    }
+
+    .done {
+      background: green;
+      color: white;
+      margin-right: 5px;
+    }
+
+    .delete {
+      background: crimson;
+      color: white;
+    }
+
+    .empty {
+      text-align: center;
+      color: #888;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .form {
+        flex-direction: column;
+      }
+
+      .task {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>🚀 TaskFlow</h1>
+
+    <p class="subtitle">
+      Full-Stack JavaScript Practice Project
+    </p>
+
+    <div class="form">
+
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="Enter task"
+      >
+
+      <select id="priority">
+
+        <option value="Low">
+          Low
+        </option>
+
+        <option value="Medium">
+          Medium
+        </option>
+
+        <option value="High">
+          High
+        </option>
+
+      </select>
+
+      <button class="add" onclick="createTask()">
+        Add Task
+      </button>
+
+    </div>
+
+    <div class="stats">
+
+      <span>
+        Total:
+        <strong id="total">0</strong>
+      </span>
+
+      <span>
+        Completed:
+        <strong id="completed">0</strong>
+      </span>
+
+      <span>
+        Pending:
+        <strong id="pending">0</strong>
+      </span>
+
+    </div>
+
+    <div id="taskList"></div>
+
+  </div>
+
+
+  <script>
+
+    // =========================
+    // DATA / BACKEND-LIKE LOGIC
+    // =========================
+
+    let tasks =
+      JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+    // CREATE
+    function createTask() {
+
+      const input =
+        document.getElementById("taskInput");
+
+      const priority =
+        document.getElementById("priority");
+
+      const name =
+        input.value.trim();
+
+      if (name === "") {
+        alert("Enter a task");
+        return;
+      }
+
+      const task = {
+
+        id: Date.now(),
+
+        name: name,
+
+        priority: priority.value,
+
+        completed: false
+
+      };
+
+      tasks.push(task);
+
+      saveTasks();
+
+      input.value = "";
+
+      displayTasks();
+    }
+
+
+    // READ
+    function displayTasks() {
+
+      const taskList =
+        document.getElementById("taskList");
+
+      taskList.innerHTML = "";
+
+      if (tasks.length === 0) {
+
+        taskList.innerHTML =
+          '<div class="empty">No tasks available 🎯</div>';
+
+        updateStats();
+
+        return;
+      }
+
+
+      tasks.forEach(task => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          task.completed
+            ? "task completed"
+            : "task";
+
+
+        div.innerHTML = `
+
+          <div>
+
+            <div class="name">
+              ${task.name}
+            </div>
+
+            <div class="priority">
+              Priority: ${task.priority}
+            </div>
+
+          </div>
+
+          <div>
+
+            <button
+              class="done"
+              onclick="updateTask(${task.id})">
+
+              ${task.completed ? "Undo" : "Done"}
+
+            </button>
+
+            <button
+              class="delete"
+              onclick="deleteTask(${task.id})">
+
+              Delete
+
+            </button>
+
+          </div>
+
+        `;
+
+        taskList.appendChild(div);
+
+      });
+
+      updateStats();
+    }
+
+
+    // UPDATE
+    function updateTask(id) {
+
+      tasks = tasks.map(task => {
+
+        if (task.id === id) {
+
+          task.completed =
+            !task.completed;
+
+        }
+
+        return task;
+
+      });
+
+      saveTasks();
+
+      displayTasks();
+    }
+
+
+    // DELETE
+    function deleteTask(id) {
+
+      tasks =
+        tasks.filter(task => task.id !== id);
+
+      saveTasks();
+
+      displayTasks();
+    }
+
+
+    // SAVE DATA
+    function saveTasks() {
+
+      localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+      );
+    }
+
+
+    // STATISTICS
+    function updateStats() {
+
+      const total = tasks.length;
+
+      const completed =
+        tasks.filter(
+          task => task.completed
+        ).length;
+
+      const pending =
+        total - completed;
+
+      document.getElementById("total")
+        .textContent = total;
+
+      document.getElementById("completed")
+        .textContent = completed;
+
+      document.getElementById("pending")
+        .textContent = pending;
+    }
+
+
+    // LOAD WHEN PAGE OPENS
+    displayTasks();
+
+  </script>
+
+</body>
+</html>
